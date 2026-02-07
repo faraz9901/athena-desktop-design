@@ -1,3 +1,4 @@
+import { ENDPOINTS } from "@/config/ENDPOINTS";
 import axios, { type AxiosRequestConfig } from "axios";
 import { extractErrorMessage } from "./error-extractor";
 
@@ -37,7 +38,7 @@ let refreshPromise: Promise<void> | null = null;
 const refreshToken = async () => {
     if (!refreshPromise) {
         refreshPromise = axiosInstance
-            .post("/auth/refresh")
+            .post(ENDPOINTS.AUTH.REFRESH)
             .then(() => {
                 refreshPromise = null;
             })

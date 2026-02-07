@@ -1,10 +1,11 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import MainLayout from './components/MainLayout';
 import ProtectedRoute from './components/ProtectedRoute';
+import { PublicRoute } from './components/PublicRoute';
+import VerifySession from './components/common/VerifySession';
 import { useMobileDetect } from './hooks/useMobileDetect';
 import MobileLandingPage from './pages/MobileLandingPage';
 import LoginPage from './pages/auth/LoginPage';
-import SignupPage from './pages/auth/SignupPage';
 import DashboardPage from './pages/dashboard/DashboardPage';
 import LaborPage from './pages/labor/LaborPage';
 import MaterialsPage from './pages/materials/MaterialsPage';
@@ -19,10 +20,14 @@ function App() {
 
   return (
     <BrowserRouter>
+      <VerifySession />
       <Routes>
         {/* Public Routes */}
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/login" element={
+          <PublicRoute>
+            <LoginPage />
+          </PublicRoute>
+        } />
 
         {/* Protected Routes */}
         <Route

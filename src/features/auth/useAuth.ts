@@ -1,0 +1,83 @@
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { logout, setCheckedAuth, setLoading, setUser } from '@/store/slices/authSlice';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import {
+  fetchCurrentUser,
+  logoutRequest,
+  sendOtp,
+  verifyOtp,
+  type SendOtpPayload,
+  type VerifyOtpPayload,
+} from './authApi';
+
+const ME_QUERY_KEY = ['auth', 'me'] as const;
+
+export const useCurrentUser = () => {
+  const dispatch = useAppDispatch();
+
+  const query = useQuery({
+    queryKey: ME_QUERY_KEY,
+    queryFn: fetchCurrentUser,
+    retry: 1,
+    staleTime: 1000 * 60,
+  });
+
+  console.log(query.data);
+
+  useEffect(() => {
+    if (query.isLoading) {
+      dispatch(setLoading(true));
+    }
+    if (query.isSuccess) {
+      dispatch(setUser(query.data));
+    }
+    if (query.isError) {
+      dispatch(setUser(null));
+    }
+    if (!query.isLoading) {
+      dispatch(setCheckedAuth(true));
+    }
+  }, [query.isLoading, query.isSuccess, query.isError, query.data, dispatch]);
+
+  return query.data;
+};
+
+export const useSendOtp = () => {
+  return useMutation({
+    mutationFn: (payload: SendOtpPayload) => sendOtp(payload),
+  });
+};
+
+export const useVerifyOtp = () => {
+  const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: VerifyOtpPayload) => verifyOtp(payload),
+    onSuccess: async () => {
+      const user = await queryClient.fetchQuery({
+        queryKey: ME_QUERY_KEY,
+        queryFn: fetchCurrentUser,
+      });
+      dispatch(setUser(user));
+    },
+  });
+};
+
+export const useLogout = () => {
+  const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => logoutRequest(),
+    onSuccess: () => {
+      dispatch(logout());
+      queryClient.removeQueries({ queryKey: ME_QUERY_KEY });
+    },
+  });
+};
+
+export const useAuthState = () => {
+  return useAppSelector((state) => state.auth);
+};

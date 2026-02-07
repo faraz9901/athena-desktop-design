@@ -1,3 +1,4 @@
+import { useLogout } from '@/features/auth/useAuth';
 import {
     HardHat,
     LayoutDashboard,
@@ -7,18 +8,16 @@ import {
     Users
 } from 'lucide-react';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { logout } from '../store/slices/authSlice';
 
 const MainLayout = () => {
     const location = useLocation();
-    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const { mutate: logoutUser } = useLogout()
 
     const handleLogout = () => {
-        dispatch(logout());
+        logoutUser();
         navigate('/login');
     };
 

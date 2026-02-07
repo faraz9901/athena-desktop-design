@@ -1,38 +1,38 @@
-import { loginSuccess } from '@/store/slices/authSlice';
-import { useMutation } from '@tanstack/react-query';
 import { HardHat, Loader2 } from 'lucide-react';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { useSendOtp, useVerifyOtp } from '@/features/auth/useAuth';
 
 const LoginPage = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const dispatch = useDispatch();
+    const [step, setStep] = useState<'mobile' | 'otp'>('mobile');
+    const [mobileNumber, setMobileNumber] = useState('');
+    const [otp, setOtp] = useState('');
+    const sendOtpMutation = useSendOtp();
+    const verifyOtpMutation = useVerifyOtp();
     const navigate = useNavigate();
 
-    const loginMutation = useMutation({
-        mutationFn: async () => {
-            // Mock API call for now since backend might not be ready
-            // const response = await apiClient.post('/auth/login', { email, password });
-            // return response.data;
-
-            // Simulate network delay
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            return {
-                user: { id: '1', name: 'Demo User', email, role: 'manager' },
-                token: 'mock-jwt-token',
-            };
-        },
-        onSuccess: (data) => {
-            dispatch(loginSuccess(data));
-            navigate('/');
-        },
-    });
-
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSendOtp = (e: React.FormEvent) => {
         e.preventDefault();
-        loginMutation.mutate();
+        if (!mobileNumber) return;
+        sendOtpMutation.mutate(
+            { mobileNumber },
+            {
+                onSuccess: () => setStep('otp'),
+            }
+        );
+    };
+
+    const handleVerifyOtp = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!mobileNumber || !otp) return;
+        verifyOtpMutation.mutate(
+            { mobileNumber, otp },
+            {
+                onSuccess: () => {
+                    navigate('/');
+                },
+            }
+        );
     };
 
     return (
@@ -43,52 +43,71 @@ const LoginPage = () => {
                         <HardHat className="w-8 h-8 text-primary" />
                     </div>
                     <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>
-                    <p className="text-muted-foreground/80">Login to manage your sites</p>
+                    <p className="text-muted-foreground/80">Login with your mobile number</p>
                 </div>
 
                 <div className="p-8">
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div>
-                            <label className="block text-sm font-medium text-foreground mb-1">Email Address</label>
-                            <input
-                                type="email"
-                                required
-                                className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all bg-background text-foreground"
-                                placeholder="you@company.com"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </div>
+                    {step === 'mobile' && (
+                        <form onSubmit={handleSendOtp} className="space-y-6">
+                            <div>
+                                <label className="block text-sm font-medium text-foreground mb-1">Mobile Number</label>
+                                <input
+                                    type="tel"
+                                    required
+                                    className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all bg-background text-foreground"
+                                    placeholder="+919876543210"
+                                    value={mobileNumber}
+                                    onChange={(e) => setMobileNumber(e.target.value)}
+                                />
+                            </div>
 
-                        <div>
-                            <label className="block text-sm font-medium text-foreground mb-1">Password</label>
-                            <input
-                                type="password"
-                                required
-                                className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all bg-background text-foreground"
-                                placeholder="••••••••"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                        </div>
+                            <button
+                                type="submit"
+                                disabled={sendOtpMutation.isPending}
+                                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center"
+                            >
+                                {sendOtpMutation.isPending ? (
+                                    <Loader2 className="w-5 h-5 animate-spin" />
+                                ) : (
+                                    'Send OTP'
+                                )}
+                            </button>
+                        </form>
+                    )}
 
-                        <button
-                            type="submit"
-                            disabled={loginMutation.isPending}
-                            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center"
-                        >
-                            {loginMutation.isPending ? (
-                                <Loader2 className="w-5 h-5 animate-spin" />
-                            ) : (
-                                'Sign In'
-                            )}
-                        </button>
-                    </form>
+                    {step === 'otp' && (
+                        <form onSubmit={handleVerifyOtp} className="space-y-6">
+                            <div>
+                                <label className="block text-sm font-medium text-foreground mb-1">Enter OTP</label>
+                                <input
+                                    type="text"
+                                    required
+                                    maxLength={6}
+                                    className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all bg-background text-foreground tracking-[0.4em] text-center"
+                                    placeholder="••••••"
+                                    value={otp}
+                                    onChange={(e) => setOtp(e.target.value)}
+                                />
+                            </div>
+
+                            <button
+                                type="submit"
+                                disabled={verifyOtpMutation.isPending}
+                                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center"
+                            >
+                                {verifyOtpMutation.isPending ? (
+                                    <Loader2 className="w-5 h-5 animate-spin" />
+                                ) : (
+                                    'Verify OTP'
+                                )}
+                            </button>
+                        </form>
+                    )}
 
                     <div className="mt-6 text-center text-sm text-muted-foreground">
-                        Don't have an account?{' '}
+                        Need help?{' '}
                         <Link to="/signup" className="text-primary hover:text-primary/90 font-semibold">
-                            Create Account
+                            Contact support
                         </Link>
                     </div>
                 </div>
