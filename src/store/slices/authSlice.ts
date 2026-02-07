@@ -1,12 +1,6 @@
+import type { User } from '@/features/auth/hooks/authApi';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-interface User {
-    id: string;
-    name: string;
-    email?: string;
-    mobileNumber: string;
-    role?: string;
-}
 
 interface AuthState {
     user: User | null;

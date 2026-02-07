@@ -1,9 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
+import { LoaderButton } from "@/components/ui/loader-button";
 import {
     Form,
     FormControl,
@@ -66,17 +65,14 @@ export const OtpForm = ({ mobileNumber, onSuccess }: OtpFormProps) => {
                     )}
                 />
 
-                <Button
+                <LoaderButton
                     type="submit"
                     className="w-full"
-                    disabled={verifyOtpMutation.isPending}
+                    isLoading={verifyOtpMutation.isPending}
+                    loadingText="Verifying OTP..."
                 >
-                    {verifyOtpMutation.isPending ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                        "Verify OTP"
-                    )}
-                </Button>
+                    Verify OTP
+                </LoaderButton>
             </form>
         </Form>
     );

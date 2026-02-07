@@ -15,3 +15,20 @@ export const otpSchema = z.object({
 
 export type MobileFormValues = z.infer<typeof mobileSchema>;
 export type OtpFormValues = z.infer<typeof otpSchema>;
+
+export const emailVerificationSchema = z.object({
+    name: z
+        .string()
+        .min(1, "Name is required"),
+    email: z
+        .email("Invalid email address"),
+});
+
+export const emailCodeSchema = z.object({
+    code: z
+        .string()
+        .length(6, "Code must be 6 characters"),
+});
+
+export type EmailVerificationFormValues = z.infer<typeof emailVerificationSchema>;
+export type EmailCodeFormValues = z.infer<typeof emailCodeSchema>;

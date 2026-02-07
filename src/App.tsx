@@ -1,10 +1,13 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import MainLayout from './components/MainLayout';
-import ProtectedRoute from './components/ProtectedRoute';
-import { PublicRoute } from './components/PublicRoute';
 import VerifySession from './components/common/VerifySession';
+import EmailVerificationRequired from './components/guards/EmailVerificationRequired';
+import ProtectedRoute from './components/guards/ProtectedRoute';
+import { PublicRoute } from './components/guards/PublicRoute';
 import LoginPage from './features/auth/pages/LoginPage';
+import VerifyEmailPage from './features/auth/pages/VerifyEmailPage';
+import VerifyEmailCodePage from './features/auth/pages/VerifyEmailCodePage';
 import { useMobileDetect } from './hooks/useMobileDetect';
 import MobileLandingPage from './pages/MobileLandingPage';
 import DashboardPage from './pages/dashboard/DashboardPage';
@@ -30,12 +33,27 @@ function App() {
           </PublicRoute>
         } />
 
+
+        <Route path="/verify-email" element={
+          <ProtectedRoute>
+            <VerifyEmailPage />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/verify-email/code" element={
+          <ProtectedRoute>
+            <VerifyEmailCodePage />
+          </ProtectedRoute>
+        } />
+
         {/* Protected Routes */}
         <Route
           path="/"
           element={
             <ProtectedRoute>
-              <MainLayout />
+              <EmailVerificationRequired>
+                <MainLayout />
+              </EmailVerificationRequired>
             </ProtectedRoute>
           }
         >

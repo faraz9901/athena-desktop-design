@@ -5,6 +5,8 @@ export const ENDPOINTS = {
         ME: '/auth/me',
         REFRESH: '/auth/refresh',
         LOGOUT: '/auth/logout',
+        SEND_EMAIL_VERIFICATION: '/auth/send-email-verification',
+        VERIFY_EMAIL_VERIFICATION: '/auth/verify-email',
     },
 
 }

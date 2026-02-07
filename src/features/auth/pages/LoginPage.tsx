@@ -1,10 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { HardHat, Loader2 } from "lucide-react";
+import { HardHat } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import { Button } from "@/components/ui/button";
+import { LoaderButton } from "@/components/ui/loader-button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
     Form,
@@ -78,17 +78,14 @@ const LoginPage = () => {
                                     )}
                                 />
 
-                                <Button
+                                <LoaderButton
                                     type="submit"
                                     className="w-full"
-                                    disabled={sendOtpMutation.isPending}
+                                    isLoading={sendOtpMutation.isPending}
+                                    loadingText="Sending OTP..."
                                 >
-                                    {sendOtpMutation.isPending ? (
-                                        <Loader2 className="h-4 w-4 animate-spin" />
-                                    ) : (
-                                        "Send OTP"
-                                    )}
-                                </Button>
+                                    Send OTP
+                                </LoaderButton>
                             </form>
                         </Form>
                     )}

@@ -5,11 +5,16 @@ import { useEffect } from 'react';
 import {
   fetchCurrentUser,
   logoutRequest,
+  sendEmailVerification,
   sendOtp,
+  verifyEmailVerification,
   verifyOtp,
+  type SendEmailVerificationPayload,
   type SendOtpPayload,
+  type VerifyEmailVerificationPayload,
   type VerifyOtpPayload,
 } from './authApi';
+
 
 const ME_QUERY_KEY = ['auth', 'me'] as const;
 
@@ -22,8 +27,6 @@ export const useCurrentUser = () => {
     retry: 1,
     staleTime: 1000 * 60,
   });
-
-  console.log(query.data);
 
   useEffect(() => {
     if (query.isLoading) {
@@ -55,6 +58,28 @@ export const useVerifyOtp = () => {
 
   return useMutation({
     mutationFn: (payload: VerifyOtpPayload) => verifyOtp(payload),
+    onSuccess: async () => {
+      const user = await queryClient.fetchQuery({
+        queryKey: ME_QUERY_KEY,
+        queryFn: fetchCurrentUser,
+      });
+      dispatch(setUser(user));
+    },
+  });
+};
+
+export const useSendEmailVerification = () => {
+  return useMutation({
+    mutationFn: (payload: SendEmailVerificationPayload) => sendEmailVerification(payload),
+  });
+};
+
+export const useVerifyEmailVerification = () => {
+  const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: VerifyEmailVerificationPayload) => verifyEmailVerification(payload),
     onSuccess: async () => {
       const user = await queryClient.fetchQuery({
         queryKey: ME_QUERY_KEY,

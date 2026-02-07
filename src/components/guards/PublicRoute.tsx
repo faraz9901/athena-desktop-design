@@ -1,7 +1,8 @@
 
 import { useAppSelector } from "@/store/hooks";
 import { Navigate } from "react-router-dom";
-import FullScreenLoader from "./common/FullScreenLoader";
+import FullScreenLoader from "../common/FullScreenLoader";
+
 
 export function PublicRoute({ children }: { children: React.ReactNode }) {
     const { isAuthenticated, checkedAuth } = useAppSelector((state) => state.auth);
