@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
+import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
@@ -50,9 +51,14 @@ export const OtpForm = ({ mobileNumber, onSuccess, onBack }: OtpFormProps) => {
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 
-                <p className="text-sm"> Please enter the OTP sent to {" "}
-                    <button type="button" onClick={onBack} className="cursor-pointer font-semibold underline text-primary">{mobileNumber}</button>
-                </p>
+                <span className="text-xs">
+                    Verifying
+                </span>
+                <div className="flex justify-between">
+                    <span className="font-semibold text-primary">{mobileNumber}</span>
+
+                    <Button type="button" onClick={onBack} size={"sm"}>Change </Button>
+                </div>
 
 
                 <FormField

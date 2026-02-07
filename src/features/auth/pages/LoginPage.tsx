@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { HardHat } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { LoaderButton } from "@/components/ui/loader-button";
-import { onError } from "@/lib/utils";
+import { cn, onError } from "@/lib/utils";
 import { toast } from "sonner";
 import { OtpForm } from "../components/OtpForm";
 import { useSendOtp } from "../hooks/useAuth";
@@ -54,17 +53,15 @@ const LoginPage = () => {
     return (
         <div className="min-h-screen flex items-center justify-center bg-background p-4">
             <Card className="w-full max-w-md shadow-xl pt-0 rounded-xl overflow-hidden">
-                <CardHeader className="bg-primary text-primary-foreground text-center p-8">
-                    <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary-foreground/20">
-                        <HardHat className="h-8 w-8 text-primary" />
-                    </div>
-                    <h1 className="text-3xl font-bold">Welcome Back</h1>
-                    <p className="text-sm text-primary-foreground/80">
-                        Login with your mobile number
+                <CardHeader className={cn(" text-primary px-8 pt-8", step === "otp" ? "pb-0" : "pb-4")}>
+                    <h1 className="text-3xl font-bold">Welcome to E-Thekedar</h1>
+                    <p className="text-sm text-muted-foreground">
+                        {step === "mobile" && "We will send an OTP to this number for verification."}
+                        {step === "otp" && "Please enter the OTP sent to your mobile number."}
                     </p>
                 </CardHeader>
 
-                <CardContent className="p-8">
+                <CardContent className="">
                     {step === "mobile" && (
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -73,9 +70,9 @@ const LoginPage = () => {
                                     name="mobileNumber"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Mobile Number</FormLabel>
+                                            <FormLabel className="font-medium">Mobile Number</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="+919876543210" {...field} />
+                                                <Input placeholder="9876543210" {...field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -88,7 +85,7 @@ const LoginPage = () => {
                                     isLoading={sendOtpMutation.isPending}
                                     loadingText="Sending OTP..."
                                 >
-                                    Send OTP
+                                    Get OTP
                                 </LoaderButton>
                             </form>
                         </Form>
