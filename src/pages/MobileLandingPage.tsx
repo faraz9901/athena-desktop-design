@@ -1,39 +1,42 @@
+import { Button } from "@/components/ui/button";
 import { Construction, Download, Smartphone } from 'lucide-react';
 
 const MobileLandingPage = () => {
     return (
-        <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 font-sans">
+        <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 flex flex-col items-center justify-center p-6 font-sans">
             <div className="flex flex-col items-center text-center max-w-md w-full space-y-8">
 
                 {/* Logo / Brand Area */}
-                <div className="bg-primary p-4 rounded-full shadow-lg mb-4">
-                    <Construction className="w-12 h-12 text-primary-foreground" />
+                <div className="bg-gradient-to-br from-primary to-primary/80 p-5 rounded-2xl shadow-2xl mb-4 animate-in fade-in duration-700">
+                    <Construction className="w-16 h-16 text-primary-foreground" />
                 </div>
 
-                <h1 className="text-3xl font-extrabold text-foreground tracking-tight">
+                <h1 className="text-4xl font-extrabold text-foreground tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
                     e-Thekedar
                 </h1>
 
-                <p className="text-muted-foreground text-lg">
+                <p className="text-muted-foreground text-lg leading-relaxed">
                     The ultimate tool for Construction Project Managers.
                 </p>
 
-                <div className="bg-card p-6 rounded-xl shadow-md border border-border w-full mt-8">
-                    <Smartphone className="w-10 h-10 text-primary mx-auto mb-4" />
-                    <h2 className="text-xl font-bold text-foreground mb-2">Desktop Only Experience</h2>
-                    <p className="text-muted-foreground mb-6">
+                <div className="bg-card p-6 rounded-2xl shadow-xl border-2 border-primary/10 w-full mt-8 hover:shadow-2xl transition-shadow duration-300">
+                    <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                        <Smartphone className="w-8 h-8 text-primary" />
+                    </div>
+                    <h2 className="text-2xl font-bold text-foreground mb-3">Desktop Only Experience</h2>
+                    <p className="text-muted-foreground mb-6 leading-relaxed">
                         Our web platform is designed for powerful desktop management. For the best experience on the go, please download our mobile app.
                     </p>
 
-                    <div className="space-y-4">
-                        <button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 px-6 rounded-lg flex items-center justify-center transition-colors">
-                            <Download className="w-5 h-5 mr-3" />
+                    <div className="space-y-3">
+                        <Button className="w-full h-12 gap-3 shadow-md hover:shadow-lg transition-shadow">
+                            <Download className="w-5 h-5" />
                             Download for Android
-                        </button>
-                        <button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 px-6 rounded-lg flex items-center justify-center transition-colors">
-                            <Download className="w-5 h-5 mr-3" />
+                        </Button>
+                        <Button className="w-full h-12 gap-3 shadow-md hover:shadow-lg transition-shadow">
+                            <Download className="w-5 h-5" />
                             Download for iOS
-                        </button>
+                        </Button>
                     </div>
                 </div>
 

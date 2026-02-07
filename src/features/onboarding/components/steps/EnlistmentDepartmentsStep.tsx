@@ -9,7 +9,6 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { LoaderButton } from "@/components/ui/loader-button";
 import {
     Select,
     SelectContent,
@@ -17,22 +16,18 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { onError } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { useSaveEnlistmentDepartments } from "../../hooks/useOnboarding";
 import { enlistmentDepartmentsSchema, type EnlistmentDepartmentsFormValues } from "../../schemas/onboarding.schemas";
 import { DepartmentType, type OnboardingData } from "../../types/onboarding.types";
 
 interface EnlistmentDepartmentsStepProps {
     initialData?: OnboardingData['enlistmentDepartments'];
-    onSuccess: () => void;
+    onNext: (data: EnlistmentDepartmentsFormValues) => void;
 }
 
-export const EnlistmentDepartmentsStep = ({ initialData, onSuccess }: EnlistmentDepartmentsStepProps) => {
-    const saveDepartmentsMutation = useSaveEnlistmentDepartments();
-
+export const EnlistmentDepartmentsStep = ({ initialData, onNext }: EnlistmentDepartmentsStepProps) => {
     const form = useForm<EnlistmentDepartmentsFormValues>({
         resolver: zodResolver(enlistmentDepartmentsSchema),
         defaultValues: {
@@ -52,34 +47,30 @@ export const EnlistmentDepartmentsStep = ({ initialData, onSuccess }: Enlistment
     });
 
     const onSubmit = (values: EnlistmentDepartmentsFormValues) => {
-        saveDepartmentsMutation.mutate(values, {
-            onSuccess: () => {
-                onSuccess();
-            },
-            onError: onError,
-        });
+        onNext(values);
     };
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
                 <div className="space-y-4">
                     {fields.map((field, index) => (
-                        <Card key={field.id} className="relative">
+                        <Card key={field.id} className="relative border-primary/20 hover:border-primary/40 transition-colors">
                             <CardContent className="pt-6">
-                                <div className="flex justify-end absolute top-2 right-2">
-                                    {fields.length > 1 && (
+                                {fields.length > 1 && (
+                                    <div className="flex justify-end absolute top-2 right-2">
                                         <Button
                                             type="button"
                                             variant="ghost"
                                             size="icon"
                                             onClick={() => remove(index)}
-                                            className="text-destructive"
+                                            className="text-destructive hover:text-destructive hover:bg-destructive/10 h-8 w-8"
                                         >
                                             <Trash2 className="h-4 w-4" />
                                         </Button>
-                                    )}
-                                </div>
+                                    </div>
+                                )}
+
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <FormField
                                         control={form.control}
@@ -92,7 +83,7 @@ export const EnlistmentDepartmentsStep = ({ initialData, onSuccess }: Enlistment
                                                     defaultValue={field.value}
                                                 >
                                                     <FormControl>
-                                                        <SelectTrigger>
+                                                        <SelectTrigger className="h-11">
                                                             <SelectValue placeholder="Select department" />
                                                         </SelectTrigger>
                                                     </FormControl>
@@ -116,7 +107,7 @@ export const EnlistmentDepartmentsStep = ({ initialData, onSuccess }: Enlistment
                                             <FormItem>
                                                 <FormLabel>Expiry Date</FormLabel>
                                                 <FormControl>
-                                                    <Input type="date" {...field} />
+                                                    <Input type="date" className="h-11" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -132,7 +123,7 @@ export const EnlistmentDepartmentsStep = ({ initialData, onSuccess }: Enlistment
                                                     <FormItem>
                                                         <FormLabel>Custom Department Name</FormLabel>
                                                         <FormControl>
-                                                            <Input placeholder="Enter department name" {...field} />
+                                                            <Input placeholder="Enter department name" className="h-11" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -150,19 +141,18 @@ export const EnlistmentDepartmentsStep = ({ initialData, onSuccess }: Enlistment
                     type="button"
                     variant="outline"
                     onClick={() => append({ department: undefined as any, expiryDate: "" })}
-                    className="w-full"
+                    className="w-full h-11 border-dashed border-2 hover:border-primary hover:bg-primary/5"
                 >
+                    <Plus className="w-4 h-4 mr-2" />
                     Add Another Department
                 </Button>
 
-                <LoaderButton
+                <Button
                     type="submit"
-                    className="w-full"
-                    isLoading={saveDepartmentsMutation.isPending}
-                    loadingText="Saving..."
+                    className="w-full h-11"
                 >
-                    Next
-                </LoaderButton>
+                    Continue
+                </Button>
             </form>
         </Form>
     );

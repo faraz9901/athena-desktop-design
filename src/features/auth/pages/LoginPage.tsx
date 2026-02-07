@@ -51,9 +51,9 @@ const LoginPage = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-background p-4">
-            <Card className="w-full max-w-md shadow-xl pt-0 rounded-xl overflow-hidden">
-                <CardHeader className={cn(" text-primary px-8 pt-8", step === "otp" ? "pb-0" : "pb-4")}>
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-accent/5 p-4">
+            <Card className="w-full max-w-md shadow-2xl pt-0 rounded-2xl overflow-hidden border-primary/10">
+                <CardHeader className={cn("bg-gradient-to-r from-primary/5 via-primary/10 to-accent/5 text-primary px-8 pt-8 border-b", step === "otp" ? "pb-0" : "pb-4")}>
                     <h1 className="text-3xl font-bold">Welcome to e-Thekedar</h1>
                     <p className="text-sm text-muted-foreground">
                         {step === "mobile" && "We will send an OTP to this number for verification."}

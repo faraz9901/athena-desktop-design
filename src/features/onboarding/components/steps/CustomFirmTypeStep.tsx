@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
@@ -7,22 +8,16 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { LoaderButton } from "@/components/ui/loader-button";
-import { onError } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useSaveCustomFirmType } from "../../hooks/useOnboarding";
 import { customFirmTypeSchema, type CustomFirmTypeFormValues } from "../../schemas/onboarding.schemas";
-
 
 interface CustomFirmTypeStepProps {
     initialValue?: string;
-    onSuccess: () => void;
+    onNext: (data: { customFirmType: string }) => void;
 }
 
-export const CustomFirmTypeStep = ({ initialValue, onSuccess }: CustomFirmTypeStepProps) => {
-    const saveCustomFirmTypeMutation = useSaveCustomFirmType();
-
+export const CustomFirmTypeStep = ({ initialValue, onNext }: CustomFirmTypeStepProps) => {
     const form = useForm<CustomFirmTypeFormValues>({
         resolver: zodResolver(customFirmTypeSchema),
         defaultValues: {
@@ -31,12 +26,7 @@ export const CustomFirmTypeStep = ({ initialValue, onSuccess }: CustomFirmTypeSt
     });
 
     const onSubmit = (values: CustomFirmTypeFormValues) => {
-        saveCustomFirmTypeMutation.mutate(values, {
-            onSuccess: () => {
-                onSuccess();
-            },
-            onError: onError,
-        });
+        onNext({ customFirmType: values.customFirmType });
     };
 
     return (
@@ -47,23 +37,28 @@ export const CustomFirmTypeStep = ({ initialValue, onSuccess }: CustomFirmTypeSt
                     name="customFirmType"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Enter Custom Firm Type</FormLabel>
+                            <FormLabel className="text-base font-semibold">Enter Custom Firm Type</FormLabel>
                             <FormControl>
-                                <Input placeholder="e.g. Cooperative Society" {...field} />
+                                <Input
+                                    placeholder="e.g., Cooperative Society, Trust, etc."
+                                    className="h-11 text-base"
+                                    {...field}
+                                />
                             </FormControl>
+                            <p className="text-sm text-muted-foreground mt-2">
+                                Please specify the type of firm or organization structure
+                            </p>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
 
-                <LoaderButton
+                <Button
                     type="submit"
-                    className="w-full"
-                    isLoading={saveCustomFirmTypeMutation.isPending}
-                    loadingText="Saving..."
+                    className="w-full h-11"
                 >
-                    Next
-                </LoaderButton>
+                    Continue
+                </Button>
             </form>
         </Form>
     );

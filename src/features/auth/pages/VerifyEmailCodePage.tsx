@@ -63,7 +63,7 @@ const VerifyEmailCodePage = () => {
         onSuccess: () => {
           toast.success("Email verified successfully");
           localStorage.removeItem(EMAIL_STORAGE_KEY);
-          navigate("/", { replace: true });
+          navigate("/onboarding", { replace: true });
         },
         onError: onError
       },
@@ -71,18 +71,16 @@ const VerifyEmailCodePage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md shadow-xl pt-0 rounded-xl overflow-hidden">
-        <CardHeader className=" px-8 pt-8 pb-0">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-accent/5 p-4">
+      <Card className="w-full max-w-md shadow-2xl pt-0 rounded-2xl overflow-hidden border-primary/10">
+        <CardHeader className="bg-gradient-to-r from-primary/5 via-primary/10 to-accent/5 px-8 pt-8 pb-4 border-b">
           <h1 className="text-3xl text-primary font-bold">Enter verification code</h1>
-          <p className="text-sm">
-            Sent to <span className="font-semibold">{email}</span>
+          <p className="text-sm text-muted-foreground mt-1">
+            Sent to <span className="font-semibold text-foreground">{email}</span>
           </p>
         </CardHeader>
 
-
-
-        <CardContent className="px-8">
+        <CardContent className="px-8 py-6">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
@@ -95,7 +93,7 @@ const VerifyEmailCodePage = () => {
                       <Input
                         maxLength={6}
                         placeholder="••••••"
-                        className="text-center tracking-[0.4em]"
+                        className="text-center tracking-[0.4em] h-12 text-lg"
                         {...field}
                       />
                     </FormControl>
@@ -106,7 +104,7 @@ const VerifyEmailCodePage = () => {
 
               <LoaderButton
                 type="submit"
-                className="w-full"
+                className="w-full h-11"
                 isLoading={verifyEmailVerificationMutation.isPending}
                 loadingText="Verifying email..."
               >
@@ -116,7 +114,7 @@ const VerifyEmailCodePage = () => {
 
               <Button
                 type="button"
-                className="w-full"
+                className="w-full h-11"
                 onClick={onBack}
                 variant={"secondary"}
               >

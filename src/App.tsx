@@ -3,7 +3,6 @@ import { Toaster } from 'sonner';
 import MainLayout from './components/MainLayout';
 import VerifySession from './components/common/VerifySession';
 import EmailVerificationRequired from './components/guards/EmailVerificationRequired';
-import OnboardingRequired from './components/guards/OnboardingRequired';
 import ProtectedRoute from './components/guards/ProtectedRoute';
 import { PublicRoute } from './components/guards/PublicRoute';
 import LoginPage from './features/auth/pages/LoginPage';
@@ -61,9 +60,9 @@ function App() {
           element={
             <ProtectedRoute>
               <EmailVerificationRequired>
-                <OnboardingRequired>
-                  <MainLayout />
-                </OnboardingRequired>
+                {/* <OnboardingRequired> */}
+                <MainLayout />
+                {/* </OnboardingRequired> */}
               </EmailVerificationRequired>
             </ProtectedRoute>
           }

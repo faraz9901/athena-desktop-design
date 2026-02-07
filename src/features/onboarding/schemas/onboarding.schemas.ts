@@ -39,14 +39,16 @@ export const firmDetailsSchema = z.object({
     gstin: z
         .string()
         .length(15, "GSTIN must be exactly 15 characters")
-        .regex(/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/, "Invalid GSTIN format"),
+    // .regex(/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/, "Invalid GSTIN format")
+    ,
     pan: z
         .string()
         .length(10, "PAN must be exactly 10 characters")
-        .regex(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/, "Invalid PAN format"),
+    // .regex(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/, "Invalid PAN format")
+    ,
     epfo: z.string().max(50, "EPFO must be less than 50 characters").optional(),
     esic: z.string().max(50, "ESIC must be less than 50 characters").optional(),
-    tan: z.string().length(10, "TAN must be exactly 10 characters").optional(),
+    tan: z.preprocess((val) => (val === "" ? undefined : val), z.string().length(10, "TAN must be exactly 10 characters").optional()),
 });
 
 export const departmentSelectionSchema = z
