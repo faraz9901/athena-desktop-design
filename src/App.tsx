@@ -3,11 +3,13 @@ import { Toaster } from 'sonner';
 import MainLayout from './components/MainLayout';
 import VerifySession from './components/common/VerifySession';
 import EmailVerificationRequired from './components/guards/EmailVerificationRequired';
+import OnboardingRequired from './components/guards/OnboardingRequired';
 import ProtectedRoute from './components/guards/ProtectedRoute';
 import { PublicRoute } from './components/guards/PublicRoute';
 import LoginPage from './features/auth/pages/LoginPage';
-import VerifyEmailPage from './features/auth/pages/VerifyEmailPage';
 import VerifyEmailCodePage from './features/auth/pages/VerifyEmailCodePage';
+import VerifyEmailPage from './features/auth/pages/VerifyEmailPage';
+import OnboardingPage from './features/onboarding/pages/OnboardingPage';
 import { useMobileDetect } from './hooks/useMobileDetect';
 import MobileLandingPage from './pages/MobileLandingPage';
 import DashboardPage from './pages/dashboard/DashboardPage';
@@ -46,13 +48,22 @@ function App() {
           </ProtectedRoute>
         } />
 
+
+        <Route path="/onboarding" element={
+          <ProtectedRoute>
+            <OnboardingPage />
+          </ProtectedRoute>
+        } />
+
         {/* Protected Routes */}
         <Route
           path="/"
           element={
             <ProtectedRoute>
               <EmailVerificationRequired>
-                <MainLayout />
+                <OnboardingRequired>
+                  <MainLayout />
+                </OnboardingRequired>
               </EmailVerificationRequired>
             </ProtectedRoute>
           }
