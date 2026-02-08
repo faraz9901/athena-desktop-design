@@ -5,9 +5,11 @@ import {
     selectCompletedSteps,
     selectCurrentStep,
     selectOnboardingData,
-    selectOnboardingProgress
+    selectOnboardingProgress,
+    startOnboarding
 } from "@/store/slices/onboardingSlice";
 import { CheckCircle2 } from "lucide-react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ProgressStepper } from "../components/ProgressStepper";
@@ -35,6 +37,10 @@ const OnboardingPage = () => {
     const handleStepComplete = (stepData: Partial<OnboardingData>) => {
         dispatch(completeStep(stepData));
     };
+
+    useEffect(() => {
+        dispatch(startOnboarding());
+    }, []);
 
     const handleComplete = () => {
         // Navigate to home or dashboard
@@ -179,7 +185,7 @@ const OnboardingPage = () => {
                     <CardHeader className="border-b bg-linear-to-r from-primary/5 via-primary/10 to-accent/5 px-10 py-6">
                         <div className="flex items-start justify-between">
                             <div className="space-y-1">
-                                <h1 className="text-3xl font-semibold tracking-tight">
+                                <h1 className="text-primary text-3xl font-semibold tracking-tight">
                                     {getStepTitle(currentStep)}
                                 </h1>
                                 <p className="max-w-2xl text-sm text-muted-foreground">
@@ -189,9 +195,6 @@ const OnboardingPage = () => {
 
                             {currentStep !== OnboardingStep.COMPLETED && (
                                 <div className="text-right text-sm">
-                                    <p className="text-xs font-semibold uppercase tracking-wide text-primary">
-                                        Step {completedSteps.length + 1} of 6
-                                    </p>
                                     <p className="mt-1 text-muted-foreground">
                                         Complete your onboarding
                                     </p>
