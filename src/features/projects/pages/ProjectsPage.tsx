@@ -10,6 +10,7 @@ import {
     Search,
     Users
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const ProjectsPage = () => {
     const projects = [
@@ -54,8 +55,10 @@ const ProjectsPage = () => {
                     <p className="text-muted-foreground mt-1">Manage your construction projects</p>
                 </div>
                 <Button className="gap-2 h-11 shadow-md">
-                    <Plus className="w-5 h-5" />
-                    New Project
+                    <Link to="/projects/create" className="flex items-center gap-2">
+                        <Plus className="w-5 h-5" />
+                        New Project
+                    </Link>
                 </Button>
             </div>
 
@@ -108,10 +111,10 @@ const ProjectsPage = () => {
                                     </div>
                                     <span
                                         className={`px-3 py-1 rounded-full text-xs font-medium ${project.status === "On Track"
-                                                ? "bg-green-100 text-green-700"
-                                                : project.status === "Delayed"
-                                                    ? "bg-orange-100 text-orange-700"
-                                                    : "bg-blue-100 text-blue-700"
+                                            ? "bg-green-100 text-green-700"
+                                            : project.status === "Delayed"
+                                                ? "bg-orange-100 text-orange-700"
+                                                : "bg-blue-100 text-blue-700"
                                             }`}
                                     >
                                         {project.status}

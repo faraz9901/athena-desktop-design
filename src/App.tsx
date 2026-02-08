@@ -5,28 +5,29 @@ import VerifySession from './components/common/VerifySession';
 import EmailVerificationRequired from './components/guards/EmailVerificationRequired';
 import ProtectedRoute from './components/guards/ProtectedRoute';
 import { PublicRoute } from './components/guards/PublicRoute';
+import RecentActivityPage from './features/activity/pages/RecentActivityPage';
 import LoginPage from './features/auth/pages/LoginPage';
 import VerifyEmailCodePage from './features/auth/pages/VerifyEmailCodePage';
 import VerifyEmailPage from './features/auth/pages/VerifyEmailPage';
+import ChatPage from './features/chat/pages/ChatPage';
+import DashboardPage from './features/dashboard/pages/DashboardPage';
+import DocumentsPage from './features/documents/pages/DocumentsPage';
+import ExpensesPage from './features/expenses/pages/ExpensesPage';
+import MobileLandingPage from './features/mobile/pages/MobileLandingPage';
+import NotificationsPage from './features/notifications/pages/NotificationsPage';
 import OnboardingPage from './features/onboarding/pages/OnboardingPage';
+import ProfilePage from './features/profile/pages/ProfilePage';
+import CreateProjectPage from './features/projects/pages/CreateProjectPage';
+import ProjectsPage from './features/projects/pages/ProjectsPage';
+import ReportsPage from './features/reports/pages/ReportsPage';
+import SettingsPage from './features/settings/pages/SettingsPage';
+import SubscriptionPage from './features/subscription/pages/SubscriptionPage';
+import AddTaskPage from './features/tasks/pages/AddTaskPage';
+import TaskDetailPage from './features/tasks/pages/TaskDetailPage';
+import TasksPage from './features/tasks/pages/TasksPage';
+import VendorsPage from './features/vendors/pages/VendorsPage';
 import { useMobileDetect } from './hooks/useMobileDetect';
-import MobileLandingPage from './pages/MobileLandingPage';
-import RecentActivityPage from './pages/activity/RecentActivityPage';
-import ChatPage from './pages/chat/ChatPage';
-import DashboardPage from './pages/dashboard/DashboardPage';
-import DocumentsPage from './pages/documents/DocumentsPage';
-import ExpensesPage from './pages/expenses/ExpensesPage';
-import NotificationsPage from './pages/notifications/NotificationsPage';
-import ProfilePage from './pages/profile/ProfilePage';
-import CreateProjectPage from './pages/projects/CreateProjectPage';
-import ProjectsPage from './pages/projects/ProjectsPage';
-import ReportsPage from './pages/reports/ReportsPage';
-import SettingsPage from './pages/settings/SettingsPage';
-import SubscriptionPage from './pages/subscription/SubscriptionPage';
-import AddTaskPage from './pages/tasks/AddTaskPage';
-import TaskDetailPage from './pages/tasks/TaskDetailPage';
-import TasksPage from './pages/tasks/TasksPage';
-import VendorsPage from './pages/vendors/VendorsPage';
+
 
 
 function App() {
