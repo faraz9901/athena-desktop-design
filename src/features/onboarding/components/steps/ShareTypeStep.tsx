@@ -47,8 +47,8 @@ export const ShareTypeStep = ({ initialValue, onNext }: ShareTypeStepProps) => {
     };
 
     return (
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-7">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
                 {shareTypeOptions.map((option) => {
                     const Icon = option.icon;
                     const isSelected = selected === option.value;
@@ -66,7 +66,7 @@ export const ShareTypeStep = ({ initialValue, onNext }: ShareTypeStepProps) => {
                             `}
                             onClick={() => handleSelect(option.value)}
                         >
-                            <div className="flex flex-col gap-3">
+                            <div className="flex flex-col gap-4">
                                 <div className={`
                                     w-14 h-14 rounded-xl flex items-center justify-center
                                     transition-colors duration-300
@@ -106,13 +106,15 @@ export const ShareTypeStep = ({ initialValue, onNext }: ShareTypeStepProps) => {
                 </p>
             )}
 
-            <Button
-                type="submit"
-                className="w-full h-11"
-                disabled={!selected}
-            >
-                Continue
-            </Button>
+            <div className="flex justify-end">
+                <Button
+                    type="submit"
+                    className="h-11 px-8 min-w-[180px]"
+                    disabled={!selected}
+                >
+                    Continue
+                </Button>
+            </div>
         </form>
     );
 };

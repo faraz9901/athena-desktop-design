@@ -52,7 +52,7 @@ export const EnlistmentDepartmentsStep = ({ initialData, onNext }: EnlistmentDep
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <div className="space-y-4">
                     {fields.map((field, index) => (
                         <Card key={field.id} className="relative border-primary/20 hover:border-primary/40 transition-colors">
@@ -71,7 +71,7 @@ export const EnlistmentDepartmentsStep = ({ initialData, onNext }: EnlistmentDep
                                     </div>
                                 )}
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
                                     <FormField
                                         control={form.control}
                                         name={`departments.${index}.department`}
@@ -147,12 +147,14 @@ export const EnlistmentDepartmentsStep = ({ initialData, onNext }: EnlistmentDep
                     Add Another Department
                 </Button>
 
-                <Button
-                    type="submit"
-                    className="w-full h-11"
-                >
-                    Continue
-                </Button>
+                <div className="flex justify-end">
+                    <Button
+                        type="submit"
+                        className="h-11 px-8 min-w-[180px]"
+                    >
+                        Continue
+                    </Button>
+                </div>
             </form>
         </Form>
     );

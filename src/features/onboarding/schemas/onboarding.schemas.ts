@@ -53,7 +53,7 @@ export const firmDetailsSchema = z.object({
 
 export const departmentSelectionSchema = z
     .object({
-        department: z.enum(DepartmentType, "Please select a valid department"),
+        department: z.enum(Object.values(DepartmentType), "Please select a valid department"),
         customDepartmentName: z
             .string()
             .max(100, "Custom department name must be less than 100 characters")

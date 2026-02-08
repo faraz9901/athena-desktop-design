@@ -59,8 +59,8 @@ export const FirmTypeStep = ({ initialValue, onNext }: FirmTypeStepProps) => {
     };
 
     return (
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-7">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
                 {firmTypeOptions.map((option) => {
                     const Icon = option.icon;
                     const isSelected = selected === option.value;
@@ -78,7 +78,7 @@ export const FirmTypeStep = ({ initialValue, onNext }: FirmTypeStepProps) => {
                             `}
                             onClick={() => handleSelect(option.value)}
                         >
-                            <div className="flex flex-col gap-3">
+                            <div className="flex flex-col gap-4">
                                 <div className={`
                                     w-12 h-12 rounded-lg flex items-center justify-center
                                     transition-colors duration-300
@@ -118,13 +118,15 @@ export const FirmTypeStep = ({ initialValue, onNext }: FirmTypeStepProps) => {
                 </p>
             )}
 
-            <Button
-                type="submit"
-                className="w-full h-11"
-                disabled={!selected}
-            >
-                Continue
-            </Button>
+            <div className="flex justify-end">
+                <Button
+                    type="submit"
+                    className="h-11 px-8 min-w-[180px]"
+                    disabled={!selected}
+                >
+                    Continue
+                </Button>
+            </div>
         </form>
     );
 };

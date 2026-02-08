@@ -1,7 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+    completeStep,
+    selectCompletedSteps,
+    selectCurrentStep,
+    selectOnboardingData,
+    selectOnboardingProgress
+} from "@/store/slices/onboardingSlice";
 import { CheckCircle2 } from "lucide-react";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ProgressStepper } from "../components/ProgressStepper";
 import { CustomFirmTypeStep } from "../components/steps/CustomFirmTypeStep";
@@ -12,89 +19,21 @@ import { OccupationStep } from "../components/steps/OccupationStep";
 import { OwnershipStep } from "../components/steps/OwnershipStep";
 import { ShareTypeStep } from "../components/steps/ShareTypeStep";
 import {
-    FirmType,
-    OccupationType,
     OnboardingStep,
-    OwnershipType,
-    type OnboardingData,
+    type OnboardingData
 } from "../types/onboarding.types";
 
 const OnboardingPage = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    // Local state management - no API calls
-    const [currentStep, setCurrentStep] = useState<OnboardingStep>(OnboardingStep.NOT_STARTED);
-    const [completedSteps, setCompletedSteps] = useState<OnboardingStep[]>([]);
-    const [onboardingData, setOnboardingData] = useState<OnboardingData>({});
-
-    const getNextStep = (
-        step: OnboardingStep,
-        occupation?: OccupationType,
-        ownershipType?: OwnershipType,
-        firmType?: FirmType,
-    ): OnboardingStep => {
-        if (step === OnboardingStep.NOT_STARTED) {
-            return OnboardingStep.SELECT_OCCUPATION;
-        }
-
-        if (step === OnboardingStep.SELECT_OCCUPATION) {
-            if (occupation === OccupationType.GOVERNMENT_CONTRACTOR) {
-                return OnboardingStep.OWNERSHIP_TYPE;
-            }
-            return OnboardingStep.COMPLETED;
-        }
-
-        if (step === OnboardingStep.OWNERSHIP_TYPE) {
-            if (ownershipType === OwnershipType.SINGLE_OWNER) {
-                return OnboardingStep.COMPLETED;
-            }
-            if (ownershipType === OwnershipType.PARTNERSHIP) {
-                return OnboardingStep.SHARE_IN_PROJECT;
-            }
-        }
-
-        if (step === OnboardingStep.SHARE_IN_PROJECT) {
-            return OnboardingStep.TYPE_OF_FIRM;
-        }
-
-        if (step === OnboardingStep.TYPE_OF_FIRM) {
-            if (firmType === FirmType.OTHER) {
-                return OnboardingStep.FIRM_TYPE_INPUT;
-            }
-            return OnboardingStep.FIRM_DETAILS;
-        }
-
-        if (step === OnboardingStep.FIRM_TYPE_INPUT) {
-            return OnboardingStep.FIRM_DETAILS;
-        }
-
-        if (step === OnboardingStep.FIRM_DETAILS) {
-            return OnboardingStep.ENLISTMENT_DEPARTMENTS;
-        }
-
-        if (step === OnboardingStep.ENLISTMENT_DEPARTMENTS) {
-            return OnboardingStep.COMPLETED;
-        }
-
-        return OnboardingStep.COMPLETED;
-    };
+    const currentStep = useSelector(selectCurrentStep);
+    const completedSteps = useSelector(selectCompletedSteps);
+    const onboardingData = useSelector(selectOnboardingData);
+    const progress = useSelector(selectOnboardingProgress);
 
     const handleStepComplete = (stepData: Partial<OnboardingData>) => {
-        const newData = { ...onboardingData, ...stepData };
-        setOnboardingData(newData);
-
-        // Mark current step as completed
-        setCompletedSteps([...completedSteps, currentStep]);
-
-        // Determine next step
-        const nextStep = getNextStep(
-            currentStep,
-            newData.occupation,
-            newData.ownershipType,
-            newData.firmType
-        );
-
-        setCurrentStep(nextStep);
+        dispatch(completeStep(stepData));
     };
 
     const handleComplete = () => {
@@ -233,38 +172,48 @@ const OnboardingPage = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-accent/5 p-8">
-            <Card className="w-full max-w-4xl shadow-2xl rounded-2xl overflow-hidden border-primary/10">
-                {/* Header with gradient */}
-                <CardHeader className="bg-gradient-to-r from-primary/5 via-primary/10 to-accent/5 px-8 pt-8 pb-6 border-b">
-                    <div className="space-y-2">
-                        <h1 className="text-3xl font-bold text-foreground">
-                            {getStepTitle(currentStep)}
-                        </h1>
-                        <p className="text-base text-muted-foreground">
-                            {getStepDescription(currentStep)}
-                        </p>
-                    </div>
+        <div className="bg-background">
+            <div className="mx-auto max-w-[1440px]">
+                <Card className="flex pt-0 flex-col rounded-none border border-border/60 shadow-xl">
+                    {/* Header */}
+                    <CardHeader className="border-b bg-linear-to-r from-primary/5 via-primary/10 to-accent/5 px-10 py-6">
+                        <div className="flex items-start justify-between">
+                            <div className="space-y-1">
+                                <h1 className="text-3xl font-semibold tracking-tight">
+                                    {getStepTitle(currentStep)}
+                                </h1>
+                                <p className="max-w-2xl text-sm text-muted-foreground">
+                                    {getStepDescription(currentStep)}
+                                </p>
+                            </div>
 
-                    {/* Progress Stepper - only show if not completed */}
-                    {currentStep !== OnboardingStep.COMPLETED && (
-                        <div className="mt-6">
-                            <ProgressStepper
-                                currentStep={currentStep}
-                                completedSteps={completedSteps}
-                            />
+                            {currentStep !== OnboardingStep.COMPLETED && (
+                                <div className="text-right text-sm">
+                                    <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+                                        Step {completedSteps.length + 1} of 6
+                                    </p>
+                                    <p className="mt-1 text-muted-foreground">
+                                        Complete your onboarding
+                                    </p>
+                                </div>
+                            )}
                         </div>
-                    )}
-                </CardHeader>
 
-                {/* Content */}
-                <CardContent className="p-8">
-                    <div className="animate-in fade-in duration-500">
+                        {currentStep !== OnboardingStep.COMPLETED && (
+                            <div className="mt-5">
+                                <ProgressStepper
+                                    currentStep={currentStep}
+                                    completedSteps={completedSteps}
+                                />
+                            </div>
+                        )}
+                    </CardHeader>
+                    <CardContent>
                         {renderStep()}
-                    </div>
-                </CardContent>
-            </Card>
-        </div>
+                    </CardContent>
+                </Card>
+            </div>
+        </div >
     );
 };
 

@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Briefcase, Building2, Hammer, Palette, Users, Wrench } from "lucide-react";
+import { Briefcase, Building2, Hammer, Palette, Users } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { occupationSchema, type OccupationFormValues } from "../../schemas/onboarding.schemas";
@@ -71,8 +71,8 @@ export const OccupationStep = ({ initialValue, onNext }: OccupationStepProps) =>
     };
 
     return (
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-7">
+            <div className="grid grid-cols-4 gap-5">
                 {occupationOptions.map((option) => {
                     const Icon = option.icon;
                     const isSelected = selected === option.value;
@@ -82,15 +82,15 @@ export const OccupationStep = ({ initialValue, onNext }: OccupationStepProps) =>
                             key={option.value}
                             className={`
                                 relative p-5 cursor-pointer transition-all duration-300
-                                hover:shadow-lg hover:scale-[1.02] hover:border-primary/50
+                                hover:shadow-lg  hover:border-primary/50
                                 ${isSelected
-                                    ? 'border-2 border-primary bg-primary/5 shadow-md'
+                                    ? 'border border-primary bg-primary/5 shadow-md'
                                     : 'border border-border hover:bg-accent/50'
                                 }
                             `}
                             onClick={() => handleSelect(option.value)}
                         >
-                            <div className="flex flex-col gap-3">
+                            <div className="flex flex-col gap-4">
                                 <div className={`
                                     w-12 h-12 rounded-lg flex items-center justify-center
                                     transition-colors duration-300
@@ -130,13 +130,15 @@ export const OccupationStep = ({ initialValue, onNext }: OccupationStepProps) =>
                 </p>
             )}
 
-            <Button
-                type="submit"
-                className="w-full h-11"
-                disabled={!selected}
-            >
-                Continue
-            </Button>
+            <div className="flex justify-end">
+                <Button
+                    type="submit"
+                    className="h-11 px-8 min-w-[180px]"
+                    disabled={!selected}
+                >
+                    Continue
+                </Button>
+            </div>
         </form>
     );
 };

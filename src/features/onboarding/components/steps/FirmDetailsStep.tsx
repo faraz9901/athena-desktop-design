@@ -40,7 +40,7 @@ export const FirmDetailsStep = ({ initialData, onNext }: FirmDetailsStepProps) =
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-7">
                 {/* Basic Information */}
                 <Card className="border-primary/20">
                     <CardHeader className="pb-4">
@@ -99,7 +99,7 @@ export const FirmDetailsStep = ({ initialData, onNext }: FirmDetailsStepProps) =
                         </div>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
                             <FormField
                                 control={form.control}
                                 name="gstin"
@@ -145,7 +145,7 @@ export const FirmDetailsStep = ({ initialData, onNext }: FirmDetailsStepProps) =
                         </div>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                             <FormField
                                 control={form.control}
                                 name="epfo"
@@ -191,12 +191,14 @@ export const FirmDetailsStep = ({ initialData, onNext }: FirmDetailsStepProps) =
                     </CardContent>
                 </Card>
 
-                <Button
-                    type="submit"
-                    className="w-full h-11"
-                >
-                    Continue
-                </Button>
+                <div className="flex justify-end">
+                    <Button
+                        type="submit"
+                        className="h-11 px-8 min-w-[180px]"
+                    >
+                        Continue
+                    </Button>
+                </div>
             </form>
         </Form>
     );
