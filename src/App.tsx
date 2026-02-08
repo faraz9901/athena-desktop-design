@@ -18,6 +18,7 @@ import NotificationsPage from './features/notifications/pages/NotificationsPage'
 import OnboardingPage from './features/onboarding/pages/OnboardingPage';
 import ProfilePage from './features/profile/pages/ProfilePage';
 import CreateProjectPage from './features/projects/pages/CreateProjectPage';
+import ProjectDetailPage from './features/projects/pages/ProjectDetailPage';
 import ProjectsPage from './features/projects/pages/ProjectsPage';
 import ReportsPage from './features/reports/pages/ReportsPage';
 import SettingsPage from './features/settings/pages/SettingsPage';
@@ -84,6 +85,7 @@ function App() {
           <Route index element={<DashboardPage />} />
           <Route path="projects" element={<ProjectsPage />} />
           <Route path="projects/create" element={<CreateProjectPage />} />
+          <Route path="projects/:id" element={<ProjectDetailPage />} />
           <Route path="tasks" element={<TasksPage />} />
           <Route path="tasks/add" element={<AddTaskPage />} />
           <Route path="tasks/:id" element={<TaskDetailPage />} />

@@ -125,7 +125,7 @@ const MainLayout = () => {
                 </header>
 
                 {/* Scrollable Content Area */}
-                <div className="h-[calc(100vh-5rem)] hide-scrollbar  overflow-auto p-6 scroll-smooth">
+                <div className="h-[calc(100vh-5rem)] hide-scrollbar  overflow-auto px-6 scroll-smooth">
                     <Outlet />
                 </div>
             </main>

@@ -10,42 +10,43 @@ import {
     Search,
     Users
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+const projects = [
+    {
+        name: "Highway Expansion Project",
+        location: "Mumbai-Pune Highway",
+        status: "In Progress",
+        progress: 75,
+        team: 45,
+        deadline: "Dec 2026",
+        budget: "₹25 Cr",
+        type: "Government",
+    },
+    {
+        name: "Metro Station Phase 2",
+        location: "Bangalore Metro",
+        status: "Delayed",
+        progress: 45,
+        team: 32,
+        deadline: "Mar 2027",
+        budget: "₹18 Cr",
+        type: "Government",
+    },
+    {
+        name: "Residential Complex",
+        location: "Sector 62, Noida",
+        status: "On Track",
+        progress: 90,
+        team: 28,
+        deadline: "Aug 2026",
+        budget: "₹12 Cr",
+        type: "Private",
+    },
+];
+
 
 const ProjectsPage = () => {
-    const projects = [
-        {
-            name: "Highway Expansion Project",
-            location: "Mumbai-Pune Highway",
-            status: "In Progress",
-            progress: 75,
-            team: 45,
-            deadline: "Dec 2026",
-            budget: "₹25 Cr",
-            type: "Government",
-        },
-        {
-            name: "Metro Station Phase 2",
-            location: "Bangalore Metro",
-            status: "Delayed",
-            progress: 45,
-            team: 32,
-            deadline: "Mar 2027",
-            budget: "₹18 Cr",
-            type: "Government",
-        },
-        {
-            name: "Residential Complex",
-            location: "Sector 62, Noida",
-            status: "On Track",
-            progress: 90,
-            team: 28,
-            deadline: "Aug 2026",
-            budget: "₹12 Cr",
-            type: "Private",
-        },
-    ];
-
+    const navigate = useNavigate();
     return (
         <div className="space-y-6">
             {/* Header */}
@@ -88,6 +89,7 @@ const ProjectsPage = () => {
                     {projects.map((project, i) => (
                         <Card
                             key={i}
+                            onClick={() => navigate(`/projects/${i + 1}`)}
                             className="hover:shadow-xl transition-all duration-300 cursor-pointer group border-l-4"
                             style={{
                                 borderLeftColor:
