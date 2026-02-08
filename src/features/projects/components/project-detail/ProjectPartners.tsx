@@ -46,7 +46,7 @@ const projectPartners = [
 ];
 
 // Mock contacts store function since we don't have the file
-const getContactsByProject = (id: string) => {
+const getContactsByProject = () => {
   return [
     { id: 1, name: "John Doe", phone: "+91 9876543210", description: "Site Supervisor" },
     { id: 2, name: "Jane Smith", phone: "+91 9876543211", description: "Architect" }
@@ -60,7 +60,7 @@ export function ProjectPartners() {
 
   const contacts = useMemo(() => {
     if (!projectId) return [];
-    return getContactsByProject(projectId);
+    return getContactsByProject();
   }, [projectId]);
 
   return (
